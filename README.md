@@ -32,5 +32,3 @@ git clone git@github.com:LeoJhonSong/Shell-Scripts.git
 echo -e "\n# shell-script path\nexport PATH=$(pwd)/Shell-Scripts/:\$PATH" >> ~/.zshrc
 ```
 
-
-

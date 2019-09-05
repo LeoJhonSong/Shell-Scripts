@@ -1,0 +1,10 @@
+#!/bin/bash
+# find files as URL, a advanced find command
+# usage example: ffau *.txt
+
+function asURL() {
+        PREFIX="file://$(pwd)/";
+        sed "s*^*$PREFIX*" |
+        sed 's/ /%20/g'; 
+}
+find "$@" | asURL
