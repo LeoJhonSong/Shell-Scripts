@@ -1,3 +1,9 @@
 #! /usr/bin/env bash
 
-cp ~/.config/Splashy/Photos/* ~/Pictures/图片
+if [[ $1 == "f" ]];
+then
+    cp ~/.config/Splashy/Photos/* ~/Pictures/图片cache/
+else
+    cp ~/.config/Splashy/Photos/* ~/Pictures/图片/
+    cp ~/Pictures/图片cache/* ~/Pictures/图片/
+fi
