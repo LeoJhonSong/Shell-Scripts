@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+# type 'crontab -e' in terminal and add a line: '*/5 * * * * ~/Desktop/Shell-Scripts/unsplash'
+# learn more at http://youness.net/linux/set-random-wallpapers-unsplash-com-ubuntu
+
+WALLPAPERPATH=~/Pictures/cache
+RESOLUTION="1920x1080"
+KEYWORDS="nature,water"
+wget -O $WALLPAPERPATH/wallpaper-temp.jpg https://source.unsplash.com/$RESOLUTION/?$KEYWORDS
+mv $WALLPAPERPATH/wallpaper-temp.jpg $WALLPAPERPATH/wallpaper.jpg
