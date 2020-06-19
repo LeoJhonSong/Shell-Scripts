@@ -2,8 +2,9 @@
 
 if [[ $1 == "f" ]];
 then
-    cp ~/Pictures/cache/wallpaper.jpg ~/Pictures/图片cache/
+    cp ~/Pictures/cache/* ~/Pictures/图片cache/
 else
-    cp ~/Pictures/cache/wallpaper.jpg ~/Pictures/图片/
+    cp ~/Pictures/cache/* ~/Pictures/图片/
     cp ~/Pictures/图片cache/* ~/Pictures/图片/
+    rm ~/Pictures/图片cache/*
 fi
