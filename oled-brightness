@@ -13,6 +13,9 @@ fi
 # if given an parameter, set the parameter as the brightness
 if [ "$1" == "" ]
 then
+    # set the initial brightness
+    brightness=$(cat $system_brightness_source)
+    xrandr --output $display --brightness $(echo "$brightness/$system_max_brightness*0.95 + 0.05" | bc -l)
     # monitor change of brightness in system_brightness_source
     inotifywait -m -e CLOSE_WRITE /sys/class/backlight/intel_backlight/brightness | while read CLOSE_WRITE; do
     brightness=$(cat $system_brightness_source)
