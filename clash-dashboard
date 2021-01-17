@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+cd ~/local/clash-dashboard-0.3.0 && npm start
