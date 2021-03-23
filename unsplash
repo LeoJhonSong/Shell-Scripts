@@ -1,16 +1,46 @@
-#! /usr/bin/env bash
+#! /usr/bin/env python3
 
-# type 'crontab -e' in terminal and add a line: '*/5 * * * * ~/Desktop/Shell-Scripts/unsplash'
-# learn more at http://youness.net/linux/set-random-wallpapers-unsplash-com-ubuntu
-# learn more about unsplash api at https://source.unsplash.com/
+'''
+Download wallpaper from unsplash with specific keywords and time interval and set as KDE wallpaper
+'''
 
-WALLPAPERPATH=~/Pictures
-RESOLUTION="1920x1080"
-KEYWORDS="wallpaper"
-wget -O $WALLPAPERPATH/wallpaper-temp.jpg https://source.unsplash.com/featured/$RESOLUTION/?$KEYWORDS
-mv $WALLPAPERPATH/wallpaper-temp.jpg $WALLPAPERPATH/wallpaper.jpg
-if [ ! -d $WALLPAPERPATH/cache ]; then
-    mkdir $WALLPAPERPATH/cache
-fi
-rm $WALLPAPERPATH/cache/*
-cp $WALLPAPERPATH/wallpaper.jpg $WALLPAPERPATH/cache/$(date +%Y-%m-%d_%h-%m-%S).jpg
+import os
+import time
+import dbus
+
+
+def setwallpaper(filepath):
+    jscript = """var allDesktops = desktops();
+    for ( i = 0; i < allDesktops.length;i++ ) {
+        d = allDesktops[i];
+        d.wallpaperPlugin = "org.kde.image";
+        d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");
+        d.writeConfig("Image", "file://%s")
+    }
+    """
+    bus = dbus.SessionBus()
+    plasma = dbus.Interface(
+        bus.get_object(
+            'org.kde.plasmashell',
+            '/PlasmaShell'),
+        dbus_interface='org.kde.PlasmaShell')
+    plasma.evaluateScript(jscript % filepath)
+
+
+# Configurations
+wallpaperPath = '~/Pictures'
+resolution = '3840x2160'  # 1920x1080, 3840x2160
+keywords = 'romantic'  # conbine keywords by ',', there should be no spaces
+interval = 5  # interval to change pic (minute)
+
+while True:
+    # download pic
+    time_s = time.time()
+    if not os.path.exists(os.path.expanduser(wallpaperPath + '/cache')):
+        os.mkdir(os.path.expanduser(wallpaperPath + '/cache'))
+    os.system('rm %s/cache/*' % wallpaperPath)  # clean old pics
+    os.system(
+        'export http_proxy=http://127.0.0.1:7890 && export https_proxy=http://127.0.0.1:7890 && wget -O %s/cache/%s.jpg https://source.unsplash.com/featured/%s/?%s' %
+        (wallpaperPath, str(time_s), resolution, keywords))
+    setwallpaper(os.path.expanduser('%s/cache/%s.jpg' % (wallpaperPath, str(time_s))))
+    time.sleep(60 * interval)
