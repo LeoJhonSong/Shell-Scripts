@@ -1,2 +1,5 @@
 #! /usr/bin/env bash
-cd ~/local/clash-dashboard-0.3.0 && npm start
+
+alias clash="sh ~/local/clash/clash.sh"
+export clashdir="/home/leo/local/clash"
+echo 1 | ~/local/clash/clash.sh

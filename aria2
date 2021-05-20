@@ -1,0 +1,2 @@
+#! /usr/bin/env sh
+aria2c --enable-rpc --allow-piece-length-change
