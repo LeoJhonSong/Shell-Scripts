@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+
+file=$1
+filename="${file%.*}"
+extension="${file##*.}"
+
+case $extension in
+    pdf )
+        ps2pdf -dPDFSETTINGS=/prepress $file $filename"_compressed."$extension
+        mv $filename"_compressed."$extension $file
+        ;;
+    jpg|jpeg )
+        jpegoptim $file
+        ;;
+    png )
+        optipng $file
+        ;;
+esac
