@@ -6,7 +6,7 @@ extension="${file##*.}"
 
 case $extension in
     pdf )
-        ps2pdf -dPDFSETTINGS=/prepress $file $filename"_compressed."$extension
+        ps2pdf -dPDFSETTINGS=/ebook $file $filename"_compressed."$extension
         mv $filename"_compressed."$extension $file
         ;;
     jpg|jpeg )
