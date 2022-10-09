@@ -6,13 +6,18 @@ extension="${file##*.}"
 
 case $extension in
     pdf )
-        ps2pdf -dPDFSETTINGS=/prepress $file $filename"_compressed."$extension
-        mv $filename"_compressed."$extension $file
+        if [[ -z $2 ]]; then
+            level=prepress
+        else
+            level=$2
+        fi
+        ps2pdf -dPDFSETTINGS=/$level "$file" "$filename""_compressed.""$extension"
+        mv "$filename""_compressed.""$extension" "$file"
         ;;
     jpg|jpeg )
-        jpegoptim $file
+        jpegoptim "$file"
         ;;
     png )
-        optipng $file
+        optipng "$file"
         ;;
 esac
