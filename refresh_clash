@@ -1,0 +1,11 @@
+#! /usr/bin/sh
+
+alias clash="bash $HOME/local/clash/clash.sh"
+export clashdir="$HOME/local/clash"
+
+# 更新节点
+echo -e "6\n4\n1\n1\n" | clash
+# 更改配置中代理模式
+sed -i '/mode: rule/c\rule: global' config.yaml
+# 重启clash
+echo -e "1\n" | clash
