@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Check if the brightness argument is valid
+if [[ $1 =~ ^[0-9]+$ ]] && [ $1 -ge 0 ] && [ $1 -le 100 ]; then
+    brightness=$1
+else
+    echo "Invalid brightness argument. Please enter an integer between 0 and 100."
+    exit 1
+fi
+
+# Get the list of connected displays
+displays=$(xrandr --verbose | grep " connected" | cut -d" " -f1)
+
+# If no display arguments are given, use all displays
+if [ $# -eq 1 ]; then
+    set -- $displays
+fi
+
+# Loop through the display arguments and set the brightness
+for display in "$@"; do
+    # Check if the display argument is valid
+    if [[ $displays =~ (^|[[:space:]])$display($|[[:space:]]) ]]; then
+        # Set the brightness using xrandr
+        xrandr --output $display --brightness $(echo "$brightness / 100" | bc -l)
+        echo "Brightness of $display set to $brightness%"
+    else
+        echo "Invalid display argument: $display. Please enter a valid display name."
+    fi
+done
+
+exit 0
+
